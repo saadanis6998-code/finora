@@ -1,0 +1,782 @@
+/* ==========================================================
+   reports.css  —  Finora Reports page
+   Load AFTER dashboard.css  (tokens + .rv + .card + .stat + .sidebar etc.)
+   ========================================================== */
+
+/* -------------------------------------------------------
+   PERIOD STRIP
+------------------------------------------------------- */
+
+.period {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+/* .pills and .pill are already in dashboard.css but we add
+   anchor-link specifics here */
+.pills { display: flex; flex-wrap: wrap; gap: 7px; }
+
+.pill {
+    padding: 7px 16px;
+    border-radius: 50px;
+    border: 1.5px solid rgba(255,255,255,.1);
+    background: rgba(255,255,255,.04);
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .4px;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background .2s, color .2s, border-color .2s, box-shadow .2s;
+}
+
+.pill:hover {
+    background: rgba(255,255,255,.08);
+    color: var(--white);
+    border-color: rgba(255,255,255,.18);
+}
+
+.pill.active {
+    background: rgba(53,211,154,.15);
+    border-color: var(--green);
+    color: var(--green);
+    box-shadow: 0 0 14px rgba(53,211,154,.18);
+}
+
+/* Custom date range form */
+.custom-range {
+    display: none;           /* JS shows it when range=custom */
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    background: rgba(255,255,255,.03);
+    border: 1.5px solid rgba(255,255,255,.08);
+    border-radius: 12px;
+    padding: 8px 14px;
+}
+
+.custom-range label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    letter-spacing: .5px;
+    text-transform: uppercase;
+}
+
+.custom-range input[type="date"] {
+    padding: 5px 10px;
+    border-radius: 7px;
+    border: 1.5px solid rgba(255,255,255,.12);
+    background: rgba(255,255,255,.06);
+    color: var(--white);
+    font-size: 12px;
+    font-family: inherit;
+    cursor: pointer;
+    outline: none;
+    transition: border-color .2s;
+}
+
+.custom-range input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(.6);
+    cursor: pointer;
+}
+
+.custom-range input[type="date"]:focus { border-color: var(--green); }
+
+.btn-apply {
+    padding: 7px 16px;
+    border-radius: 8px;
+    border: 1.5px solid rgba(255,255,255,.12);
+    background: rgba(255,255,255,.06);
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background .2s, color .2s, border-color .2s;
+    white-space: nowrap;
+}
+
+.btn-apply:hover,
+.btn-apply.active {
+    background: var(--green);
+    border-color: var(--green);
+    color: #0b1424;
+}
+
+/* Period label row */
+.period-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    margin: 0;
+}
+
+.period-label svg {
+    width: 14px; height: 14px;
+    stroke: var(--muted); fill: none;
+    stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+    flex-shrink: 0;
+}
+
+.period-label span {
+    margin-left: auto;
+    font-size: 11px;
+    color: rgba(255,255,255,.3);
+}
+
+/* Flash notice */
+.flash {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.flash svg {
+    width: 16px; height: 16px; fill: none;
+    stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+    flex-shrink: 0;
+}
+
+.flash-error {
+    background: rgba(239,107,107,.1);
+    border: 1px solid rgba(239,107,107,.25);
+    color: var(--coral);
+}
+
+.flash-error svg { stroke: var(--coral); }
+
+/* -------------------------------------------------------
+   STAT GRID — 4-column on reports
+------------------------------------------------------- */
+
+.r-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+}
+
+@media (max-width: 900px)  { .r-stats { grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 480px)  { .r-stats { grid-template-columns: 1fr; } }
+
+/* -------------------------------------------------------
+   CARD HEAD  (inside .card)
+------------------------------------------------------- */
+
+.card-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+}
+
+.card-head h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--white);
+    margin: 0 0 3px;
+}
+
+.card-head p {
+    font-size: 11px;
+    color: var(--muted);
+    margin: 0;
+}
+
+/* Legend (Income / Expenses label row) */
+.legend {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.legend span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+}
+
+/* Coloured dots used in chart legend + top-list */
+.dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.dot.in  { background: var(--green); }
+.dot.out { background: var(--coral); }
+
+/* -------------------------------------------------------
+   TREND CHART
+------------------------------------------------------- */
+
+.trend {
+    position: relative;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    gap: 6px;
+}
+
+/* Y-axis labels */
+.y-axis {
+    position: absolute;
+    top: 0; left: 0;
+    height: 100%;
+    width: 52px;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.y-axis span {
+    position: absolute;
+    right: 0;
+    transform: translateY(-50%);
+    font-size: 9px;
+    font-weight: 700;
+    color: rgba(255,255,255,.22);
+    white-space: nowrap;
+    letter-spacing: .3px;
+}
+
+/* SVG plot area */
+.plot {
+    position: relative;
+    margin-left: 56px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: rgba(255,255,255,.02);
+    cursor: crosshair;
+}
+
+.plot svg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+/* Grid lines inside SVG */
+.grid-lines line {
+    stroke: rgba(255,255,255,.05);
+    stroke-width: 1;
+}
+
+/* Chart paths */
+.ln {
+    fill: none;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 2000;
+    stroke-dashoffset: 2000;
+    animation: drawLine 1.3s cubic-bezier(.4,0,.2,1) calc(var(--intro,2s) + .55s) forwards;
+}
+
+.ln-in { stroke: var(--green); }
+
+.ln-ex {
+    stroke: var(--coral);
+    animation-delay: calc(var(--intro,2s) + .7s);
+}
+
+@keyframes drawLine { to { stroke-dashoffset: 0; } }
+
+/* Hover cursor (vertical line) */
+.cursor {
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 1px;
+    background: rgba(255,255,255,.18);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity .1s;
+}
+
+/* Hover dots on line */
+.pt {
+    position: absolute;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    border: 2px solid var(--bg, #0b1424);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity .1s, left .05s, top .05s;
+    transform: translate(-50%, -50%);
+}
+
+.pt-in { background: var(--green); }
+.pt-ex { background: var(--coral); }
+
+/* Tooltip */
+.t-tip {
+    position: absolute;
+    top: 8px;
+    background: #1a2844;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 10px;
+    padding: 9px 13px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity .15s;
+    white-space: nowrap;
+    font-size: 12px;
+    z-index: 10;
+}
+
+.t-tip strong {
+    display: block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .8px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+}
+
+.t-tip span {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-weight: 600;
+    color: var(--white);
+    line-height: 1.9;
+}
+
+.t-tip em {
+    font-style: normal;
+    color: var(--muted);
+    font-size: 11px;
+    min-width: 56px;
+}
+
+.t-tip b {
+    margin-left: auto;
+    padding-left: 12px;
+    color: var(--white);
+}
+
+/* X-axis labels */
+.x-axis {
+    position: relative;
+    margin-left: 56px;
+    height: 20px;
+}
+
+.x-axis span {
+    position: absolute;
+    transform: translateX(-50%);
+    font-size: 9px;
+    font-weight: 700;
+    color: rgba(255,255,255,.22);
+    white-space: nowrap;
+    letter-spacing: .3px;
+}
+
+/* -------------------------------------------------------
+   2-COL GRID (categories+insights / expenses+income)
+------------------------------------------------------- */
+
+.r-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+@media (max-width: 780px) { .r-grid { grid-template-columns: 1fr; } }
+
+/* -------------------------------------------------------
+   DONUT CHART
+------------------------------------------------------- */
+
+.donut-wrap {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.donut {
+    position: relative;
+    flex-shrink: 0;
+    width: 120px; height: 120px;
+}
+
+.donut svg {
+    display: block;
+    width: 100%; height: 100%;
+    animation: spinIn .6s cubic-bezier(.4,0,.2,1) calc(var(--intro,2s) + .7s) both;
+}
+
+@keyframes spinIn {
+    from { opacity: 0; transform: rotate(-90deg) scale(.7); }
+    to   { opacity: 1; transform: rotate(0deg) scale(1); }
+}
+
+.donut-bg {
+    fill: none;
+    stroke: rgba(255,255,255,.06);
+    stroke-width: 18;
+}
+
+/* Each donut segment — animated via --len, --off, --k CSS vars */
+.seg {
+    fill: none;
+    stroke-width: 18;
+    stroke-linecap: butt;
+    transform-origin: 60px 60px;
+    transform: rotate(-90deg);
+    stroke-dasharray: var(--len, 0) 301.59;
+    stroke-dashoffset: calc(0px - var(--off, 0px));
+    animation: segGrow .8s cubic-bezier(.4,0,.2,1)
+               calc(var(--intro,2s) + .85s + var(--k,0) * .1s) both;
+}
+
+@keyframes segGrow {
+    from { stroke-dasharray: 0 301.59; stroke-dashoffset: 0; }
+}
+
+/* Donut center text */
+.donut-center {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    line-height: 1.3;
+    pointer-events: none;
+}
+
+.donut-center small {
+    display: block;
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: var(--muted);
+    text-transform: uppercase;
+}
+
+.donut-center strong {
+    font-family: 'Manrope', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--white);
+}
+
+/* Donut legend list */
+.donut-legend {
+    flex: 1;
+    min-width: 0;
+    list-style: none;
+    margin: 0; padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.donut-legend li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 12px;
+}
+
+.dl-name {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--white);
+    font-weight: 600;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.dl-val {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.dl-val b  { font-weight: 700; color: var(--white); font-size: 11px; }
+.dl-val em { font-style: normal; font-size: 10px; color: var(--muted); }
+
+/* -------------------------------------------------------
+   INSIGHTS
+------------------------------------------------------- */
+
+.insights {
+    list-style: none;
+    margin: 0; padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.insight {
+    display: flex;
+    gap: 11px;
+    align-items: flex-start;
+}
+
+/* warn variant */
+.insight.warn .in-icon {
+    background: rgba(239,107,107,.12);
+    border-color: rgba(239,107,107,.2);
+}
+.insight.warn .in-icon svg { stroke: var(--coral); }
+
+.in-icon {
+    flex-shrink: 0;
+    width: 32px; height: 32px;
+    border-radius: 9px;
+    display: grid;
+    place-items: center;
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.08);
+}
+
+.in-icon svg {
+    width: 16px; height: 16px;
+    stroke: var(--green); fill: none;
+    stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;
+}
+
+.insight strong {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.3;
+    margin-bottom: 2px;
+}
+
+.insight p {
+    font-size: 11px;
+    color: var(--muted);
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* -------------------------------------------------------
+   TOP LISTS  (.top-list ol > li)
+------------------------------------------------------- */
+
+.top-list {
+    list-style: none;
+    margin: 0; padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.top-list li {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
+
+.rank {
+    flex-shrink: 0;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.1);
+    display: grid;
+    place-items: center;
+    font-size: 9px;
+    font-weight: 800;
+    color: var(--muted);
+}
+
+.top-meta { flex: 1; min-width: 0; }
+
+.top-meta strong {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--white);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.top-meta small {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 2px;
+}
+
+.top-amt {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--coral);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* -------------------------------------------------------
+   INCOME BREAKDOWN BARS  (.breakdown)
+------------------------------------------------------- */
+
+.breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.bd-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-size: 12px;
+}
+
+.bd-top span {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--white);
+    font-weight: 600;
+}
+
+.bd-top b { color: var(--green); font-weight: 700; }
+
+.bd-track {
+    height: 5px;
+    background: rgba(255,255,255,.07);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.bd-track i {
+    display: block;
+    height: 100%;
+    width: var(--w, 0%);
+    background: var(--c, var(--green));
+    border-radius: 5px;
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: barGrow .7s cubic-bezier(.4,0,.2,1)
+               calc(var(--intro,2s) + .8s + var(--k,0) * .08s) forwards;
+}
+
+@keyframes barGrow { to { transform: scaleX(1); } }
+
+.bd-row small {
+    display: block;
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 4px;
+}
+
+/* -------------------------------------------------------
+   EMPTY STATE
+------------------------------------------------------- */
+
+.empty-report {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 60px 24px;
+    gap: 14px;
+}
+
+.empty-art {
+    width: 52px; height: 52px;
+    border-radius: 14px;
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.08);
+    display: grid;
+    place-items: center;
+}
+
+.empty-art svg {
+    width: 24px; height: 24px;
+    stroke: var(--muted); fill: none;
+    stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round;
+}
+
+.empty-report h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--white);
+    margin: 0;
+}
+
+.empty-report p {
+    font-size: 13px;
+    color: var(--muted);
+    margin: 0;
+    max-width: 280px;
+    line-height: 1.6;
+}
+
+.empty-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 4px;
+}
+
+/* -------------------------------------------------------
+   MISC
+------------------------------------------------------- */
+
+.muted-note {
+    font-size: 12px;
+    color: var(--muted);
+    margin: 4px 0 0;
+}
+
+/* -------------------------------------------------------
+   PRINT
+------------------------------------------------------- */
+
+@media print {
+    .sidebar, .topbar, .period, .period-label,
+    #printBtn, .pg-intro { display: none !important; }
+
+    .main { margin: 0 !important; padding: 0 !important; }
+
+    .card, .stat {
+        break-inside: avoid;
+        background: #fff !important;
+        border: 1px solid #ddd !important;
+        animation: none !important;
+        opacity: 1 !important;
+    }
+
+    .stat-value, .card-head h3, h1 { color: #111 !important; }
+    .stat-label, .card-head p, .muted-note,
+    .period-label { color: #666 !important; }
+
+    .r-grid, .r-stats { grid-template-columns: 1fr 1fr !important; }
+}

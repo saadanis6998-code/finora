@@ -1,0 +1,12 @@
+# Private database configuration
+/config/db.php
+
+# Environment secrets
+.env
+
+# Dependencies
+/vendor/
+/node_modules/
+
+# Log files
+*.log

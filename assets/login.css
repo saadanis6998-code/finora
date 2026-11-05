@@ -1,0 +1,272 @@
+/* =========================================================
+   FINORA — LOGIN PAGE ADD-ON
+   Load AFTER style.css. Overrides timing so the page reveals
+   after a short 2-second welcome intro (register uses 4s).
+   ========================================================= */
+
+:root {
+    --intro: 1.45s; /* page content reveals as the doors open */
+}
+
+/* =========================================================
+   WELCOME INTRO — 2 seconds
+   0.0–1.2s  logo + line + "welcome back"
+   1.3–2.0s  two doors slide apart
+   ========================================================= */
+
+.welcome-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    animation: wGone .01s linear 2s forwards;
+}
+
+.welcome-overlay::before,
+.welcome-overlay::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50.3%;
+    background:
+        radial-gradient(circle at 50% 50%, #13233b, #0b1424 70%),
+        #0b1424;
+}
+
+.welcome-overlay::before {
+    left: 0;
+    animation: wLeft .7s cubic-bezier(.76, 0, .24, 1) 1.3s forwards;
+}
+
+.welcome-overlay::after {
+    right: 0;
+    animation: wRight .7s cubic-bezier(.76, 0, .24, 1) 1.3s forwards;
+}
+
+.welcome-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    animation: wContentOut .35s ease 1.15s forwards;
+}
+
+.welcome-logo {
+    color: var(--white);
+    font-family: 'Manrope', sans-serif;
+    font-size: clamp(48px, 10vw, 70px);
+    font-weight: 800;
+    letter-spacing: -3px;
+    line-height: 1.1;
+    opacity: 0;
+    transform: scale(.82);
+    filter: blur(12px);
+    animation: wLogoIn .75s var(--ease) .1s forwards;
+}
+
+.welcome-logo span {
+    color: var(--green);
+    animation: finoraDotGlow 1.2s ease .5s forwards;
+}
+
+.welcome-line {
+    width: 130px;
+    height: 2px;
+    margin: 18px auto 0;
+    overflow: hidden;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, .09);
+}
+
+.welcome-line i {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, var(--green), #8ff0c9);
+    box-shadow: 0 0 12px rgba(53, 211, 154, .7);
+    transform: translateX(-100%);
+    animation: wLine .85s cubic-bezier(.6, 0, .2, 1) .3s forwards;
+}
+
+.welcome-text {
+    margin-top: 15px;
+    color: #9eacc0;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 3.5px;
+    opacity: 0;
+    animation: wUp .5s ease .5s forwards;
+}
+
+@keyframes wLogoIn {
+    to { opacity: 1; transform: scale(1); filter: blur(0); }
+}
+
+@keyframes wLine {
+    to { transform: translateX(0); }
+}
+
+@keyframes wUp {
+    from { opacity: 0; transform: translateY(7px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes wContentOut {
+    to { opacity: 0; transform: scale(1.04); }
+}
+
+@keyframes wLeft {
+    0%   { transform: translateX(0);     box-shadow: 0 0 0 rgba(53, 211, 154, 0); }
+    30%  { box-shadow: 2px 0 36px rgba(53, 211, 154, .45); }
+    100% { transform: translateX(-101%); box-shadow: 0 0 0 rgba(53, 211, 154, 0); }
+}
+
+@keyframes wRight {
+    0%   { transform: translateX(0);    box-shadow: 0 0 0 rgba(53, 211, 154, 0); }
+    30%  { box-shadow: -2px 0 36px rgba(53, 211, 154, .45); }
+    100% { transform: translateX(101%); box-shadow: 0 0 0 rgba(53, 211, 154, 0); }
+}
+
+@keyframes wGone {
+    to { visibility: hidden; }
+}
+
+/* =========================================================
+   LEFT PANEL — spending overview card
+   ========================================================= */
+
+.preview-title {
+    color: var(--white);
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.mix-list {
+    display: grid;
+    gap: 17px;
+    margin-top: 22px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, .10);
+}
+
+.mix-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    color: #b3bfd0;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.mix-top b {
+    color: var(--white);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.mix-track {
+    height: 7px;
+    overflow: hidden;
+    border-radius: 7px;
+    background: rgba(255, 255, 255, .08);
+}
+
+.mix-track i {
+    display: block;
+    width: 0;
+    height: 100%;
+    border-radius: 7px;
+    background: linear-gradient(90deg, var(--green-dark), var(--green));
+    box-shadow: 0 0 14px rgba(53, 211, 154, .45);
+    animation: mixFill 1s var(--ease) forwards;
+    animation-delay: calc(var(--intro) + .6s + var(--k) * .12s);
+}
+
+@keyframes mixFill {
+    to { width: var(--w); }
+}
+
+.chip-icon.green {
+    background: rgba(53, 211, 154, .14);
+    color: var(--green);
+}
+
+.chip-goal { animation-delay: calc(var(--intro) + .9s), calc(var(--intro) + 1.7s); }
+.chip-spend { animation-delay: calc(var(--intro) + 1.1s), calc(var(--intro) + 2s); }
+
+/* =========================================================
+   FORM — success banner, caps hint, locked state
+   ========================================================= */
+
+.success-message {
+    display: flex;
+    gap: 11px;
+    margin-bottom: 24px;
+    padding: 14px 16px;
+    border: 1px solid #b8ecd5;
+    border-radius: 11px;
+    background: linear-gradient(180deg, #f4fdf9, #ecfaf4);
+    color: #0f6b4b;
+    font-size: 12.5px;
+    line-height: 1.7;
+}
+
+.success-message svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.caps-hint {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    max-height: 0;
+    overflow: hidden;
+    color: #b7791f;
+    font-size: 11px;
+    font-weight: 600;
+    opacity: 0;
+    transition: max-height .25s ease, opacity .25s ease, margin .25s ease;
+}
+
+.caps-hint svg {
+    width: 14px;
+    height: 14px;
+}
+
+.caps-hint.show {
+    max-height: 24px;
+    margin-top: 9px;
+    opacity: 1;
+}
+
+button[type="submit"]:disabled {
+    cursor: not-allowed;
+    opacity: .75;
+    transform: none;
+}
+
+button[type="submit"]:disabled::before {
+    opacity: 0;
+}
+
+/* Error box on the login page should shake right after the doors open */
+.error-message {
+    animation-delay: calc(var(--intro) + .2s);
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+    .welcome-overlay { display: none; }
+
+    .mix-track i {
+        animation: none;
+        width: var(--w);
+    }
+}
